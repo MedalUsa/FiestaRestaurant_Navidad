@@ -1,0 +1,88 @@
+.motion-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  overflow: hidden;
+  perspective: 135vh;
+  perspective-origin: 50% 7%;
+  pointer-events: auto;
+}
+.motion-layer > div {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+.envelope {
+  --fold-edge: 71%;
+  --fold-tip: 92%;
+}
+.envelope .lid {
+  clip-path: polygon(0 0,100% 0,100% var(--fold-edge),50% var(--fold-tip),0 var(--fold-edge));
+  transform-origin: 50% 0;
+  backface-visibility: hidden;
+}
+.envelope .lid::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg,transparent,rgba(43,0,10,.5));
+  opacity: 0;
+}
+.envelope .pocket {
+  clip-path: polygon(0 calc(var(--fold-edge) - 1%),50% calc(var(--fold-tip) - .5%),100% calc(var(--fold-edge) - 1%),100% 100%,0 100%);
+}
+.envelope.playing .lid { animation: open-flap 1040ms cubic-bezier(.43,.03,.28,1) both; }
+.envelope.playing .lid::after { animation: shade-fold 870ms ease-in both; }
+.envelope.playing .pocket { animation: slip-envelope 1220ms cubic-bezier(.52,.02,.24,1) both; }
+.unfold-menu .mast, .unfold-menu .catalog { animation: invitation-sheet 1180ms cubic-bezier(.19,.82,.19,1) both; }
+.unfold-menu .spread { animation: reveal-chapter 1120ms ease-out both; }
+@keyframes open-flap {
+  0%, 5% { transform: translateY(0) rotateX(0); }
+  38% { transform: translateY(-1%) rotateX(-23deg); }
+  100% { transform: translateY(-13%) rotateX(-101deg); }
+}
+@keyframes shade-fold { to { opacity: .84; } }
+@keyframes slip-envelope {
+  0%, 20% { transform: translateY(0); }
+  86%, 100% { transform: translateY(36%); }
+}
+@keyframes invitation-sheet {
+  0%, 18% { transform: translateY(9vh) scale(.97); }
+  100% { transform: none; }
+}
+@keyframes reveal-chapter {
+  0%, 23% { opacity: .4; transform: translateY(14px); }
+  100% { opacity: 1; transform: none; }
+}
+/* A circular cut in the old checkout reveals the actual confirmation underneath. */
+@property --ink-cut {
+  syntax: "<length>";
+  initial-value: 0px;
+  inherits: false;
+}
+.payment.playing .checkout-print {
+  mask-image: radial-gradient(circle at var(--cx) var(--cy), transparent var(--ink-cut), black calc(var(--ink-cut) + 1px));
+  animation: open-imprint 1140ms cubic-bezier(.57,.03,.24,1) both;
+}
+@keyframes open-imprint {
+  0%, 13% { --ink-cut: 0px; }
+  100% { --ink-cut: var(--radius); }
+}
+.print-receipt .confirm { animation: none; }
+.print-receipt .pickup img { animation: place-setting 1260ms cubic-bezier(.19,.8,.23,1) both; }
+.print-receipt .confirm h1 { animation: receipt-title 1280ms ease both; }
+@keyframes place-setting {
+  0%, 27% { transform: translateX(36%) rotate(11deg); opacity: .2; }
+  100% { transform: none; opacity: 1; }
+}
+@keyframes receipt-title {
+  0%, 32% { transform: translateY(12px); opacity: .2; }
+  100% { transform: none; opacity: 1; }
+}
+@media (max-width:740px) {
+  .envelope { --fold-edge: 75%; --fold-tip: 92.5%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .motion-layer { display:none; }
+  .unfold-menu *, .print-receipt * { animation: none !important; }
+}
