@@ -169,7 +169,6 @@ function App() {
   const selected =
     products.find((p) => p.id === highlight && p.category === cat) ||
     products.find((p) => p.category === cat)!;
-  const tabs = useRef<HTMLElement>(null);
   const [mobile, setMobile] = useState(
     () => matchMedia("(max-width:740px)").matches,
   );
@@ -193,15 +192,6 @@ function App() {
   useEffect(() => {
     persist(s);
   }, [s]);
-  useEffect(() => {
-    if (page === "carta" && mobile) {
-      const el = tabs.current?.querySelector<HTMLElement>(
-        '[aria-current="page"]',
-      );
-      if (el && tabs.current)
-        tabs.current.scrollLeft = el.offsetLeft - tabs.current.offsetLeft - 24;
-    }
-  }, [cat, page, mobile]);
   const patch = (v: Partial<typeof s>) => set((prev) => ({ ...prev, ...v }));
   const setN = (id: string, n: number) =>
     set((prev) => {
@@ -228,7 +218,7 @@ function App() {
     if (mobile) go("plato/" + p.id);
   };
   const tabnav = (
-    <nav className="tabs" ref={tabs} aria-label="Categorías">
+    <nav className="tabs" aria-label="Categorías">
       {categories.map((v, i) => (
         <button
           key={v.name}
@@ -307,7 +297,7 @@ function App() {
   return (
     <div
       className={
-        "site " + (dark ? "wine " : "ivory ") + (isCover ? "coverpage" : "")
+        "site " + (dark ? "wine " : "ivory ") + (isCover ? "coverpage" : page === "carta" ? "catalogpage" : "")
       }
     >
       {isCover ? (
@@ -344,24 +334,14 @@ function App() {
           <main>
             {page === "carta" ? (
               <section className="catalog">
-                <h1 className="scriptlabel">
-                  <img src={media("carta.webp")} alt="Carta navideña" />
-                </h1>
+                <h1 className="scriptlabel">Carta navideña</h1>
                 {tabnav}
                 <div className="spread">
                   <div className="contents">
-                    <h2 className="chapter">
-                      <img src={media("titulo-" + categories[cat].art + ".webp")}
-                        alt={categories[cat].title} />
-                    </h2>
-                    <img
-                      className="etch"
-                      src={media(categories[cat].art + ".webp")}
-                      alt=""
-                    />
-                    {cat === 0 && (
-                      <img className="sprig" src={media("rama.webp")} alt="" />
-                    )}
+                    <div className="chapter-heading">
+                      <h2 className="chapter">{categories[cat].title}</h2>
+                      <img className="etch" src={media(categories[cat].art + ".webp")} alt="" />
+                    </div>
                     <div className="dishlist">
                       {products
                         .filter((p) => p.category === cat)

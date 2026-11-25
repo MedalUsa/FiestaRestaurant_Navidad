@@ -1,4 +1,12 @@
+@font-face {
+  font-family: "Pinyon Script";
+  src: url("./fonts/pinyon-script-latin.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
 :root {
+  --script: "Pinyon Script", "Snell Roundhand", cursive;
   --wine: #72071f;
   --night: #5f0019;
   --cream: #fff4df;
@@ -135,9 +143,13 @@ h3 {
   font-size: clamp(12px, 1.3vw, 20px);
   letter-spacing: 0.24em;
 }
-.invite picture {
-  width: min(84vw, 1130px);
+.scriptlabel, .chapter {
+  font-family: var(--script);
+  font-weight: 400;
+  font-style: normal;
+  font-synthesis: none;
 }
+.invite picture { width: min(84vw, 1130px); }
 .invite button {
   border: 1px solid var(--cream);
   padding: 0.62em 1.3em;
@@ -166,7 +178,6 @@ h3 {
   padding: 0 5vw 55px;
 }
 .scriptlabel,
-.sprig,
 .etch {
   display: none;
 }
@@ -199,15 +210,9 @@ h3 {
   position: relative;
 }
 .chapter {
-  font-style: italic;
-  font-size: 43px;
-  margin-bottom: 14px;
-}
-.chapter img {
-  height: clamp(39px, 4.1vw, 53px);
-  width: auto;
-  object-fit: contain;
-  object-position: left;
+  font-size: clamp(48px, 4.2vw, 66px);
+  line-height: 1.14;
+  margin: 0 0 12px;
 }
 .dishrow {
   padding: 11px 0;
@@ -562,10 +567,7 @@ fieldset {
   .invite {
     gap: 27px;
   }
-  .invite picture {
-    max-width: 360px;
-    width: 86vw;
-  }
+  .invite picture { max-width: 360px; width: 86vw; }
   .invite p {
     font-size: 13px;
   }
@@ -575,111 +577,101 @@ fieldset {
   .flap {
     --tip: 70%;
   }
+  .catalogpage {
+    display: grid;
+    grid-template-rows: auto 1fr;
+  }
+  .catalogpage .mast { width: 100%; }
+  .catalogpage main, .catalog .spread { display: flex; flex-direction: column; }
   .catalog {
-    padding: 0 0 30px;
+    --gutter: clamp(18px, 5vw, 32px);
+    flex: 1;
+    width: 100%;
+    max-width: 600px;
+    padding: 0 var(--gutter) max(22px, env(safe-area-inset-bottom));
+    display: flex;
+    flex-direction: column;
   }
   .scriptlabel {
     display: block;
-    margin: 3px 20px 9px;
-  }
-  .scriptlabel img {
-    width: min(84vw, 355px);
+    font-size: clamp(42px, 11.8vw, 57px);
+    line-height: 1.12;
+    margin: 6px 0 8px;
   }
   .tabs {
-    justify-content: flex-start;
-    gap: 24px;
-    overflow-x: auto;
-    scrollbar-width: none;
-    border: 0;
-    padding: 0 22px 5px;
-    position: relative;
-  }
-  .tabs::-webkit-scrollbar {
-    display: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 clamp(8px, 2.8vw, 17px);
+    padding: 0 0 5px;
+    border-bottom-color: #caa67466;
   }
   .tabs button {
-    font-size: 17px;
-    min-height: 38px;
+    min-height: 44px;
+    min-width: 44px;
+    max-width: 100%;
+    font-size: 16px;
+    font-weight: 400;
+    white-space: normal;
+    padding-inline: 3px;
   }
-  .spread {
-    display: block;
-    margin: 8px 0 0;
+  .tabs [aria-current] { border-color: var(--cream); }
+  .catalog .spread { flex: 1; margin: 0; }
+  .contents {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    padding: 0;
+  }
+  .chapter-heading {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(90px, 36%);
+    gap: 12px;
+    align-items: center;
+    padding: 12px 0 5px;
   }
   .chapter {
-    display: none;
-  }
-  .contents {
-    padding: 18px 24px 50px;
-    min-height: 410px;
+    font-size: clamp(35px, 9.6vw, 55px);
+    line-height: 1.05;
+    margin: 0;
+    overflow-wrap: anywhere;
   }
   .etch {
     display: block;
-    position: absolute;
-    right: 2%;
-    width: 39%;
-    max-width: 200px;
-    max-height: 220px;
+    width: 100%;
+    height: clamp(84px, 12svh, 127px);
     object-fit: contain;
-    top: 18px;
-    pointer-events: none;
+    object-position: right center;
   }
-  .sprig {
-    display: block;
-    position: absolute;
-    right: 5%;
-    bottom: 10px;
-    width: 56px;
+  .contents:has(.dishrow:nth-child(3):last-child) .etch,
+  .contents:has(.dishrow:nth-child(2):last-child) .etch {
+    height: clamp(110px, 20svh, 174px);
   }
   .dishlist {
-    position: relative;
-    z-index: 1;
+    flex: 1;
     display: flex;
     flex-direction: column;
-    gap: 14px;
+    justify-content: space-around;
+    gap: clamp(7px, 1.6svh, 15px);
+    padding: 5px 0 0;
   }
-  .dishrow {
-    border: 0;
-    padding: 0;
-  }
-  .dishrow button:first-child {
-    min-height: 48px;
-    font-size: clamp(22px, 5.7vw, 31px);
-    line-height: 1.17;
+  .dishrow { border: 0; padding: 0; }
+  .dishrow > button:first-child {
     display: flex;
     align-items: center;
-    gap: 12px;
-    max-width: 100%;
+    justify-content: space-between;
+    gap: 14px;
+    width: 100%;
+    min-height: 44px;
+    font-size: clamp(21px, 5.5vw, 27px);
+    line-height: 1.2;
   }
-  .dishrow i {
-    display: inline;
-    font: 23px var(--sans);
+  .dishrow i { display: inline; font: 22px var(--ser); color: var(--gold); }
+  .dishrow p {
+    color: #f1d9c6;
+    margin: -2px 25px 4px 0;
+    font: 15px/1.4 var(--ser);
   }
-  .dishrow {
-    max-width: 86%;
-  }
-  .dishrow:nth-child(-n + 2) {
-    max-width: 55%;
-  }
-  .dishrow:nth-child(2) {
-    margin-left: 4%;
-  }
-  .dishrow:nth-child(3) {
-    margin-left: 9%;
-  }
-  .dishrow:nth-child(4) {
-    margin-left: 15%;
-  }
-  .dishrow:nth-child(5) {
-    margin-left: 6%;
-  }
-  .dishrow p,
-  .selected:before {
-    display: none;
-  }
-  .contents:has(.dishrow:nth-child(3):last-child) .dishlist,
-  .contents:has(.dishrow:nth-child(2):last-child) .dishlist {
-    gap: 29px;
-  }
+  .dishrow p:empty, .selected:before { display: none; }
   .detail > .food {
     width: 100%;
     aspect-ratio: 1.2;
@@ -727,4 +719,15 @@ fieldset {
       opacity: 1;
     }
   }
+}
+
+@media (max-width: 520px) {
+  .tabs {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    column-gap: 0;
+    justify-items: center;
+  }
+  .tabs button { grid-column: span 2; }
+  .tabs button:nth-child(4) { grid-column: 2 / span 2; }
 }
