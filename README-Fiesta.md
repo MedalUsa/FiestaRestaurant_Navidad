@@ -1,17 +1,17 @@
 # Fiesta · La mesa de Navidad
 
-Carta de 16 productos en cinco categorías. La experiencia utiliza React, Vite y TypeScript. El carrito y los pedidos se guardan durante la sesión de la pestaña. El pago funciona en el navegador con la tarjeta de prueba de la interfaz. Los importes y cupos son ilustrativos.
+Landing y carta responsive en React, Vite y TypeScript. El botón de la portada abre el book de Canva. El enlace Book navideño de la navegación lleva a la carta interactiva. Los 15 platos del menú y los cuatro congelados incluyen fotografías extraídas del diseño de Fiesta. Los títulos usan texto y fuentes locales. La tipografía caligráfica es Pinyon Script. Los títulos serif usan Kepler Std cuando está instalada y Bodoni Moda como alternativa incluida.
 
-## Desarrollo local
+## Publicación
 
-Con Node.js 22.12 o posterior, ejecuta `npm ci` y `npm run dev` desde la raíz. Para verificar una compilación de producción, usa `npm run build` y luego `npm run preview`.
+Extraer el ZIP en la raíz de la rama main del repositorio conectado a Cloudflare. El archivo contiene el código fuente, la configuración y los recursos que se publican. Publicar-Fiesta.ps1 toma la lista de archivos del ZIP, crea el commit de esos archivos y ejecuta git push origin main. Si el commit ya existe, reintenta el push. Los cambios preparados en otras rutas quedan fuera del commit. No hace falta instalar dependencias en el equipo que realiza el push.
 
-## Recursos visuales
+Para compilar en Cloudflare, utilizar Node 22.12 o posterior, el comando npm run build y el directorio de salida dist. El sitio está preparado para la raíz del dominio. El manifiesto npm y el lockfile permiten reproducir la instalación. Las fuentes y fotos se sirven desde el propio despliegue.
 
-Cada producto tiene su propia imagen en `public/media`. Los productos que carecían de fotografía usan imágenes generadas para esta presentación. La asignación por producto está en `src/menu.ts`. Las miniaturas del pedido se recortan en formato cuadrado. Los cinco títulos de sección se extrajeron del arte de la carta 2026. La portada usa una solapa de papel y la confirmación se revela desde el botón de pago.
+## Alcance de la selección
 
-## GitHub y Cloudflare Pages
+Mis pedidos guarda las selecciones en la sesión de la pestaña y permite abrir WhatsApp con la lista. La persona revisa el mensaje antes de enviarlo. Los importes se muestran como S/ — según el prototipo. La disponibilidad y el pago se coordinan con el restaurante. El rótulo Libro de reclamaciones está pendiente de la URL oficial. El enlace Condiciones de pedido lleva a los detalles de entrega y pago.
 
-El archivo Fiesta-Navidad-Final.zip se extrae en la raíz del repositorio. El script Publicar-Fiesta.ps1 comprueba la rama main, instala las dependencias, compila, añade los archivos del ZIP, crea el commit y ejecuta git push origin main. Se puede volver a ejecutar si un push requiere autenticación. Usa el parámetro -Zip si guardaste la descarga en otra carpeta.
+## Edición
 
-En Cloudflare, abre Workers & Pages → Create application → Pages → Connect to Git. Elige GitHub y FiestaRestaurant_Navidad. Configura la rama de producción main, preset React (Vite), comando npm run build y salida dist. Deja vacío el directorio raíz. La demo funciona sin credenciales de Shopify ni servidor.
+Los nombres, categorías, contactos de asesoría, enlace al book y respuestas de entrega están en src/book.ts y src/main.tsx. Las fotografías y tipografías están en public/book. El catálogo usa una grilla en escritorio y un carrusel con controles en celular. Al ampliar una foto se puede cerrar con Escape, el botón de cierre o Volver a la carta.
